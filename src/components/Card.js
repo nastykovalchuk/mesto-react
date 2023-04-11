@@ -8,7 +8,12 @@ function Card(props) {
   return (
     <li className="elements__item">
       <button className="elements__delete" type="button"></button>
-      <img className="elements__photo" src={props.card.link} alt="" onClick={() => handleClick()} />
+      <img
+        className="elements__photo"
+        src={props.card.link}
+        alt={props.card.name}
+        onClick={() => handleClick()}
+      />
 
       <div className="elements__caption">
         <h2 className="elements__title">{props.card.name}</h2>

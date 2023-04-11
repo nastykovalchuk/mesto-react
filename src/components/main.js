@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Api from "../utils/Api";
 import Card from "./Card";
 
@@ -8,15 +8,19 @@ function Main(props) {
   const [userAvatar, setUserAvatar] = useState("");
   const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
-    Api.getUserInfo().then((res) => {
-      setUserName(res.name);
-      setUserDescription(res.about);
-      setUserAvatar(res.avatar);
-    });
-    Api.getCards().then((res) => {
-      setCards(res);
-    });
+  useEffect(() => {
+    Api.getUserInfo()
+      .then((res) => {
+        setUserName(res.name);
+        setUserDescription(res.about);
+        setUserAvatar(res.avatar);
+      })
+      .catch((error) => console.log(error));
+    Api.getCards()
+      .then((res) => {
+        setCards(res);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   return (
@@ -66,8 +70,14 @@ function Main(props) {
       <section className="elements">
         <ul className="elements__card">
           {cards.map((card) => {
-          return <Card key={card._id} card={card} onCardClick={props.onCardClick} />
-        })}
+            return (
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={props.onCardClick}
+              />
+            );
+          })}
         </ul>
       </section>
     </main>

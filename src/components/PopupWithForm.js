@@ -21,7 +21,7 @@ function PopupWithForm(props) {
             title="Сохранить аватар"
             aria-label="Сохранить аватар" 
           >
-            Сохранить
+            {props.buttonText}
           </button>
         </form>
       </div>
