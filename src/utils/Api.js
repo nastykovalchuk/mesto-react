@@ -15,7 +15,7 @@ class Api {
       headers: this._headers,
       body: JSON.stringify({
         name: data.name,
-        about: data.aboutMe,
+        about: data.about,
       }),
     }).then((res) => this._getResError(res));
   }
@@ -24,7 +24,7 @@ class Api {
     return fetch(this._baseUrl + "/users/me/avatar", {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({ avatar: data.valueProfileAvatar }),
+      body: JSON.stringify(data),
     }).then((res) => this._getResError(res));
   }
 
@@ -38,10 +38,7 @@ class Api {
     return fetch(this._baseUrl + "/cards", {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        link: data.link,
-      }),
+      body: JSON.stringify(data),
     }).then((res) => this._getResError(res));
   }
 
@@ -52,16 +49,9 @@ class Api {
     }).then((res) => this._getResError(res));
   }
 
-  setLike(id) {
+  changeLikeCardStatus(id, isLiked) {
     return fetch(this._baseUrl + "/cards/" + id + "/likes", {
-      method: "PUT",
-      headers: this._headers,
-    }).then((res) => this._getResError(res));
-  }
-
-  unSetLike(id) {
-    return fetch(this._baseUrl + "/cards/" + id + "/likes", {
-      method: "DELETE",
+      method: isLiked?  "DELETE" : "PUT" ,
       headers: this._headers,
     }).then((res) => this._getResError(res));
   }
@@ -76,7 +66,7 @@ class Api {
   }
 }
 
-export default new Api({
+const api = new Api({
   baseUrl: "https://mesto.nomoreparties.co/v1/cohort-61",
   headers: {
     authorization: "1fc4f262-e0cf-44e9-9bbd-12c0480609d0",
@@ -84,4 +74,4 @@ export default new Api({
   },
 });
 
-
+export default api;
