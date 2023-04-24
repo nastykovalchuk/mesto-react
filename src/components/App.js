@@ -47,7 +47,8 @@ function App() {
 
   function handleUpdateUser(data) {
     setIsLoading(true);
-    api.patchUserInfo(data)
+    api
+      .patchUserInfo(data)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -58,7 +59,8 @@ function App() {
 
   function handleUpdateAvatar(data) {
     setIsLoading(true);
-    api.patchAvatar(data)
+    api
+      .patchAvatar(data)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -69,7 +71,8 @@ function App() {
 
   function handleAddPlaceSubmit(data) {
     setIsLoading(true);
-    api.newCard(data)
+    api
+      .newCard(data)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
@@ -81,7 +84,8 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, isLiked)
+    api
+      .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
@@ -92,20 +96,25 @@ function App() {
 
   function handleCardDelete(e) {
     e.preventDefault();
-    api.deleteCard(selectedCard._id)
-        .then(() => {setCards(state => state.filter(c => c._id !== selectedCard._id))
-        closeAllPopups()})
-        .catch(err => console.log(err));
-}
+    api
+      .deleteCard(selectedCard._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== selectedCard._id));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
 
   useEffect(() => {
-    api.getUserInfo()
+    api
+      .getUserInfo()
       .then((res) => {
         setCurrentUser(res);
       })
       .catch((error) => console.log(error));
 
-    api.getCards()
+    api
+      .getCards()
       .then((res) => {
         setCards(res);
       })
@@ -154,7 +163,10 @@ function App() {
           buttonText={"Да"}
           onSubmit={handleCardDelete}
         />
-        <ImagePopup card={isDeletePopupOpen || selectedCard} onClose={closeAllPopups} />
+        <ImagePopup
+          card={isDeletePopupOpen || selectedCard}
+          onClose={closeAllPopups}
+        />
         <Footer />
       </div>
     </CurrentUserContext.Provider>
