@@ -5,7 +5,7 @@ import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import CurrentUserContext from "../context/CurrentUserContext";
-import api from "../utils/api";
+import Api, { getResError } from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -47,78 +47,67 @@ function App() {
 
   function handleUpdateUser(data) {
     setIsLoading(true);
-    api
-      .patchUserInfo(data)
+    Api.patchUserInfo(data)
+      .then(getResError)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
   }
 
   function handleUpdateAvatar(data) {
     setIsLoading(true);
-    api
-      .patchAvatar(data)
+    Api.patchAvatar(data)
+      .then(getResError)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
       })
-      .catch((error) => console.log(error))
       .finally(() => setIsLoading(false));
   }
 
   function handleAddPlaceSubmit(data) {
     setIsLoading(true);
-    api
-      .newCard(data)
+    Api.newCard(data)
+      .then(getResError)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
   }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api
-      .changeLikeCardStatus(card._id, isLiked)
+    Api.changeLikeCardStatus(card._id, isLiked)
+      .then(getResError)
       .then((newCard) => {
         setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
         );
-      })
-      .catch((error) => console.log(error));
+      });
   }
 
   function handleCardDelete(e) {
     e.preventDefault();
-    api
-      .deleteCard(selectedCard._id)
+    Api.deleteCard(selectedCard._id)
+      .then(getResError)
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== selectedCard._id));
         closeAllPopups();
-      })
-      .catch((err) => console.log(err));
+      });
   }
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((error) => console.log(error));
+    Api.getUserInfo()
+      .then(getResError)
+      .then((res) => setCurrentUser(res));
 
-    api
-      .getCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((error) => console.log(error));
+    Api.getCards()
+      .then(getResError)
+      .then((res) => setCards(res));
   }, []);
 
   return (

@@ -21,8 +21,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, onLoading }) {
 
   return (
     <PopupWithForm
-      name={"placePopup"}
-      title={"Новое место"}
+      name="placePopup"
+      title="Новое место"
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}

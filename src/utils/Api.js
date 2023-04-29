@@ -6,7 +6,7 @@ class Api {
   getUserInfo() {
     return fetch(this._baseUrl + "/users/me", {
       headers: this._headers,
-    }).then((res) => this._getResError(res));
+    })
   }
 
   patchUserInfo(data) {
@@ -17,7 +17,7 @@ class Api {
         name: data.name,
         about: data.about,
       }),
-    }).then((res) => this._getResError(res));
+    })
   }
 
   patchAvatar(data) {
@@ -25,13 +25,13 @@ class Api {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify(data),
-    }).then((res) => this._getResError(res));
+    })
   }
 
   getCards() {
     return fetch(this._baseUrl + "/cards", {
       headers: this._headers,
-    }).then((res) => this._getResError(res));
+    })
   }
 
   newCard(data) {
@@ -39,31 +39,23 @@ class Api {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify(data),
-    }).then((res) => this._getResError(res));
+    })
   }
 
   deleteCard(id) {
     return fetch(this._baseUrl + "/cards/" + id, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => this._getResError(res));
+    })
   }
 
   changeLikeCardStatus(id, isLiked) {
     return fetch(this._baseUrl + "/cards/" + id + "/likes", {
       method: isLiked?  "DELETE" : "PUT" ,
       headers: this._headers,
-    }).then((res) => this._getResError(res));
+    })
   }
 
-  _getResError(res) {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`).catch((err) => {
-      console.log(err);
-    });
-  }
 }
 
 const api = new Api({
@@ -73,5 +65,14 @@ const api = new Api({
     "Content-Type": "application/json",
   },
 });
+
+export function getResError(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`).catch((err) => {
+    console.log(err);
+  });
+}
 
 export default api;

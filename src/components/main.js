@@ -1,19 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import Card from "./Card";
 import CurrentUserContext from "../context/CurrentUserContext";
 
 function Main(props) {
   const currentUser = useContext(CurrentUserContext);
-
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
-
-  useEffect(() => {
-    setUserName(currentUser.name);
-    setUserDescription(currentUser.about);
-    setUserAvatar(currentUser.avatar);
-  }, [currentUser]);
 
   return (
     <main className="page__main">
@@ -30,14 +20,14 @@ function Main(props) {
           >
             <img
               className="profile__image"
-              src={userAvatar}
+              src={currentUser.avatar}
               alt="Фото профиля"
             />
           </button>
         </div>
 
         <div className="profile__info">
-          <h1 className="profile__name">{userName}</h1>
+          <h1 className="profile__name">{currentUser.name}</h1>
           <button
             type="button"
             className="profile__edit-button"
@@ -45,7 +35,7 @@ function Main(props) {
               props.onEditProfile();
             }}
           ></button>
-          <p className="profile__about">{userDescription}</p>
+          <p className="profile__about">{currentUser.about}</p>
         </div>
 
         <button
